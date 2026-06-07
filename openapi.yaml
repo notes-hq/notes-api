@@ -1,0 +1,205 @@
+openapi: 3.0.3
+
+info:
+  title: API заметок
+  version: 1.0.0
+  description: Простой однопользовательский API для заметок с тегами.
+
+servers:
+  - url: http://localhost:3000/api/v1
+
+paths:
+  /notes:
+    get:
+      summary: Получить заметки
+      description: >
+        Возвращает заметки, отсортированные по createdAt в порядке убывания, новые сначала.
+        Если значения createdAt равны, первым идёт больший id.
+        Если ни одна заметка не соответствует запросу, возвращает 200 OK и пустой массив.
+        Параметр search выполняет регистронезависимый поиск подстроки в title и сохранённом content.
+        Параметр tag фильтрует заметки по точному имени тега без #, регистронезависимо.
+        Если search и tag переданы вместе, оба условия применяются через AND.
+        Пустые значения search и tag или значения только из пробельных символов считаются отсутствующими.
+      parameters:
+        - name: search
+          in: query
+          required: false
+          allowEmptyValue: true
+          description: Значение очищается через trim перед использованием. Ищет в title или сохранённом content. Пустое значение или значение только из пробельных символов считается отсутствующим.
+          schema:
+            type: string
+        - name: tag
+          in: query
+          required: false
+          allowEmptyValue: true
+          description: "Значение очищается через trim перед использованием. Имя тега без #. Сравнение регистронезависимое. Пустое значение или значение только из пробельных символов считается отсутствующим. Значения с # или другими недопустимыми символами тега не соответствуют ни одному тегу."
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Note"
+
+    post:
+      summary: Создать заметку
+      description: Создаёт заметку из title и content. Теги извлекаются из content. Лишние поля игнорируются.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NoteInput"
+      responses:
+        "201":
+          description: Создано
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Note"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+  /notes/{id}:
+    get:
+      summary: Получить заметку по id
+      description: Возвращает одну заметку по положительному целочисленному id.
+      parameters:
+        - $ref: "#/components/parameters/NoteId"
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Note"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    patch:
+      summary: Обновить заметку
+      description: Обновляет заметку из title и content. Теги пересчитываются из content. Лишние поля игнорируются.
+      parameters:
+        - $ref: "#/components/parameters/NoteId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NoteInput"
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Note"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    delete:
+      summary: Удалить заметку
+      description: Удаляет одну заметку по положительному целочисленному id.
+      parameters:
+        - $ref: "#/components/parameters/NoteId"
+      responses:
+        "204":
+          description: Нет содержимого
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+components:
+  parameters:
+    NoteId:
+      name: id
+      in: path
+      required: true
+      description: Положительный целочисленный id заметки.
+      schema:
+        type: integer
+        minimum: 1
+
+  responses:
+    BadRequest:
+      description: Некорректный запрос
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+    NotFound:
+      description: Не найдено
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+  schemas:
+    Note:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - title
+        - content
+        - tags
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        title:
+          type: string
+          maxLength: 255
+        content:
+          type: string
+        tags:
+          type: array
+          description: "Теги без #, в нижнем регистре, уникальные, в порядке первого появления. Пустой массив, если у заметки нет тегов."
+          items:
+            type: string
+            maxLength: 100
+        createdAt:
+          type: string
+          format: date-time
+          description: Строка даты и времени UTC с суффиксом Z.
+        updatedAt:
+          type: string
+          format: date-time
+          description: Строка даты и времени UTC с суффиксом Z.
+
+    NoteInput:
+      type: object
+      required:
+        - title
+        - content
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Очищается через trim перед валидацией и сохранением. Не должен быть пустым после trim.
+        content:
+          type: string
+          minLength: 1
+          description: "Очищается через trim перед валидацией и сохранением. Не должен быть пустым после trim. Теги являются токенами #tag, разделёнными пробельными символами; после # разрешены только Unicode-буквы, цифры и подчёркивание. Максимальная длина каждого тега — 100 символов. Некорректный формат или длина тега возвращает 400."
+
+    Error:
+      type: object
+      additionalProperties: false
+      required:
+        - message
+      properties:
+        message:
+          type: string

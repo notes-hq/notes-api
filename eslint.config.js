@@ -1,0 +1,77 @@
+import js from '@eslint/js';
+import globals from 'globals';
+
+export default [
+  {
+    ignores: ['node_modules/'],
+  },
+
+  js.configs.recommended,
+
+  {
+    files: ['**/*.js'],
+    languageOptions: {
+      ecmaVersion: 2024,
+      sourceType: 'module',
+      globals: {
+        ...globals.nodeBuiltin,
+      },
+    },
+    rules: {
+      'array-callback-return': 'error',
+      'block-scoped-var': 'error',
+      camelcase: ['error', { properties: 'never' }],
+      'consistent-return': 'error',
+      curly: ['error', 'all'],
+      'default-case-last': 'error',
+      'dot-notation': 'error',
+      eqeqeq: ['error', 'always'],
+      'func-style': ['error', 'declaration', { allowArrowFunctions: true }],
+      'guard-for-in': 'error',
+
+      'no-alert': 'error',
+      'no-array-constructor': 'error',
+      'no-caller': 'error',
+      'no-console': 'off',
+      'no-constructor-return': 'error',
+      'no-duplicate-imports': 'error',
+      'no-else-return': 'error',
+      'no-empty-function': 'error',
+      'no-eval': 'error',
+      'no-extend-native': 'error',
+      'no-extra-bind': 'error',
+      'no-implicit-coercion': 'error',
+      'no-implied-eval': 'error',
+      'no-lonely-if': 'error',
+      'no-multi-assign': 'error',
+      'no-nested-ternary': 'error',
+      'no-new': 'error',
+      'no-new-func': 'error',
+      'no-new-wrappers': 'error',
+      'no-promise-executor-return': 'error',
+      'no-sequences': 'error',
+      'no-shadow': 'error',
+      'no-template-curly-in-string': 'error',
+      'no-throw-literal': 'error',
+      'no-unneeded-ternary': 'error',
+      'no-unused-expressions': 'error',
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      'no-use-before-define': ['error', { functions: false }],
+      'no-useless-concat': 'error',
+      'no-useless-rename': 'error',
+      'no-var': 'error',
+
+      'object-shorthand': ['error', 'always'],
+      'one-var': ['error', 'never'],
+      'prefer-const': 'error',
+      'prefer-object-spread': 'error',
+      'prefer-promise-reject-errors': 'error',
+      'prefer-template': 'error',
+      quotes: ['error', 'single', { avoidEscape: true }],
+      radix: 'error',
+      'require-await': 'error',
+      semi: ['error', 'always'],
+      yoda: 'error',
+    },
+  },
+];
