@@ -4,6 +4,11 @@ import mysql from 'mysql2/promise';
 
 dotenv.config({ quiet: true });
 
+/**
+ * Собирает параметры подключения к MySQL из env с локальными значениями по умолчанию.
+ *
+ * @returns {object}
+ */
 function getConnectionConfig() {
   return {
     host: process.env.DB_HOST ?? 'localhost',
@@ -16,6 +21,11 @@ function getConnectionConfig() {
   };
 }
 
+/**
+ * Очищает данные таблиц и сбрасывает AUTO_INCREMENT для повторяемых ручных проверок.
+ *
+ * @returns {Promise<void>}
+ */
 async function main() {
   const connection = await mysql.createConnection(getConnectionConfig());
   const statements = [
@@ -39,6 +49,12 @@ async function main() {
   }
 }
 
+/**
+ * Выбирает понятный текст ошибки для CLI-вывода скрипта очистки.
+ *
+ * @param {Error & { code?: string }} error
+ * @returns {string}
+ */
 function getErrorMessage(error) {
   if (error.message !== '') {
     return error.message;

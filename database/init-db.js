@@ -5,6 +5,11 @@ import mysql from 'mysql2/promise';
 
 dotenv.config({ quiet: true });
 
+/**
+ * Собирает параметры подключения к MySQL из env с локальными значениями по умолчанию.
+ *
+ * @returns {object}
+ */
 function getConnectionConfig() {
   return {
     host: process.env.DB_HOST ?? 'localhost',
@@ -18,6 +23,11 @@ function getConnectionConfig() {
   };
 }
 
+/**
+ * Инициализирует схему базы из schema.sql и фиксирует UTC для текущей сессии.
+ *
+ * @returns {Promise<void>}
+ */
 async function main() {
   const connection = await mysql.createConnection(getConnectionConfig());
 
@@ -32,6 +42,12 @@ async function main() {
   }
 }
 
+/**
+ * Выбирает понятный текст ошибки для CLI-вывода скрипта инициализации.
+ *
+ * @param {Error & { code?: string }} error
+ * @returns {string}
+ */
 function getErrorMessage(error) {
   if (error.message !== '') {
     return error.message;

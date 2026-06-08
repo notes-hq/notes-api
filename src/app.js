@@ -7,6 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use('/api/v1/notes', notesRouter);
+// Ошибка от express.json() превращается в 400, остальные непойманные ошибки скрываются за 500.
 app.use((error, _req, res, _next) => {
   if (error.status === 400) {
     return res.status(400).json({ message: 'Invalid JSON' });

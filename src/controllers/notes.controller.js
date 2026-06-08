@@ -1,5 +1,12 @@
 import * as notesService from '../services/notes.service.js';
 
+/**
+ * Отправляет единый формат ошибки API: { message }.
+ *
+ * @param {object} res
+ * @param {Error & { status?: number }} error
+ * @returns {object}
+ */
 function sendError(res, error) {
   const status = error.status ?? 500;
   const message = error.status === undefined ? 'Internal Server Error' : error.message;
@@ -7,6 +14,13 @@ function sendError(res, error) {
   return res.status(status).json({ message });
 }
 
+/**
+ * Контроллер GET /notes: передает query-фильтры в service-слой.
+ *
+ * @param {object} req
+ * @param {object} res
+ * @returns {Promise<object>}
+ */
 export async function getNotes(req, res) {
   try {
     const notes = await notesService.getNotes(req.query);
@@ -17,6 +31,13 @@ export async function getNotes(req, res) {
   }
 }
 
+/**
+ * Контроллер POST /notes: создает заметку и возвращает 201 с новой моделью.
+ *
+ * @param {object} req
+ * @param {object} res
+ * @returns {Promise<object>}
+ */
 export async function createNote(req, res) {
   try {
     const note = await notesService.createNote(req.body);
@@ -27,6 +48,13 @@ export async function createNote(req, res) {
   }
 }
 
+/**
+ * Контроллер GET /notes/:id: возвращает одну заметку по route-параметру.
+ *
+ * @param {object} req
+ * @param {object} res
+ * @returns {Promise<object>}
+ */
 export async function getNoteById(req, res) {
   try {
     const note = await notesService.getNoteById(req.params.id);
@@ -37,6 +65,13 @@ export async function getNoteById(req, res) {
   }
 }
 
+/**
+ * Контроллер PATCH /notes/:id: обновляет title/content целиком.
+ *
+ * @param {object} req
+ * @param {object} res
+ * @returns {Promise<object>}
+ */
 export async function updateNote(req, res) {
   try {
     const note = await notesService.updateNote(req.params.id, req.body);
@@ -47,6 +82,13 @@ export async function updateNote(req, res) {
   }
 }
 
+/**
+ * Контроллер DELETE /notes/:id: успешное удаление отвечает 204 без тела.
+ *
+ * @param {object} req
+ * @param {object} res
+ * @returns {Promise<object>}
+ */
 export async function deleteNote(req, res) {
   try {
     await notesService.deleteNote(req.params.id);

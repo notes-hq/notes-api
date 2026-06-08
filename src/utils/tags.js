@@ -1,5 +1,14 @@
 const tagPattern = /^#[\p{L}0-9_]{1,100}$/u;
 
+/**
+ * Извлекает теги из content по backend-правилам формата.
+ * Тегом считается whitespace-разделенный токен вида #name; имя приводится к lowercase,
+ * дубликаты удаляются с сохранением порядка первого появления.
+ *
+ * @param {string} content
+ * @returns {string[]}
+ * @throws {Error} Если найден токен с #, но он не соответствует формату тега.
+ */
 export function parseTags(content) {
   const tags = [];
   const seenTags = new Set();

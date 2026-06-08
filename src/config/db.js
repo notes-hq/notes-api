@@ -16,6 +16,7 @@ const pool = mysql.createPool({
   charset: 'utf8mb4_unicode_ci',
 });
 
+// На каждом новом соединении фиксируется UTC, независимо от настроек MySQL-сервера.
 pool.on('connection', (connection) => {
   connection.query("SET time_zone = '+00:00'");
 });
