@@ -6,7 +6,7 @@ info:
   description: Простой однопользовательский API для заметок с тегами.
 
 servers:
-  - url: http://localhost:3000/api/v1
+  - url: /api/v1
 
 paths:
   /notes:

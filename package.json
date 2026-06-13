@@ -5,7 +5,9 @@
   "scripts": {
     "init-db": "node database/init-db.js",
     "clear-db": "node database/clear-db.js",
+    "seed:demo": "node scripts/seed-demo.js",
     "start": "node src/server.js",
+    "test:scenario": "node scripts/test-scenario.js",
     "lint": "eslint ."
   },
   "dependencies": {

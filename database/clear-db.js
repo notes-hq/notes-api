@@ -43,7 +43,7 @@ async function main() {
       await connection.query(statement);
     }
 
-    console.log('Database data cleared');
+    console.log('Данные базы данных очищены');
   } finally {
     await connection.end();
   }
@@ -64,7 +64,7 @@ function getErrorMessage(error) {
     return error.code;
   }
 
-  return 'Database clearing failed';
+  return 'Не удалось очистить данные базы данных';
 }
 
 try {

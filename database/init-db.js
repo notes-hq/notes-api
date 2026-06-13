@@ -36,7 +36,7 @@ async function main() {
 
     await connection.query("SET time_zone = '+00:00'");
     await connection.query(schema);
-    console.log('Database tables initialized');
+    console.log('Таблицы базы данных инициализированы');
   } finally {
     await connection.end();
   }
@@ -57,7 +57,7 @@ function getErrorMessage(error) {
     return error.code;
   }
 
-  return 'Database initialization failed';
+  return 'Не удалось инициализировать базу данных';
 }
 
 try {
