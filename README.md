@@ -14,7 +14,7 @@ Backend API доступен с префиксом:
 http://188.225.58.19/api/v1
 ```
 
-Swgger UI для спецификации API:
+Swagger UI для спецификации API:
 
 [http://188.225.58.19/api-docs/](http://188.225.58.19/api-docs/)
 

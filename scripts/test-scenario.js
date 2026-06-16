@@ -269,7 +269,7 @@ function getBackendUnavailableMessage(url, error) {
  * Строит URL с query-параметрами без добавления пустых значений.
  *
  * @param {string} path
- * @param {Record<string, string | undefined} query
+ * @param {Record<string, string | undefined>} query
  * @returns {string}
  */
 function buildUrl(path, query = {}) {
