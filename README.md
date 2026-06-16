@@ -6,27 +6,19 @@ Backend-часть информационной системы заметок с
 
 Демо-стенд проекта доступен по адресу:
 
-```text
-http://188.225.58.19/
-```
+[http://188.225.58.19/](http://188.225.58.19/)
 
 Backend API доступен с префиксом:
 
-```text
-http://188.225.58.19/api/v1
-```
+[http://188.225.58.19/api/v1](http://188.225.58.19/api/v1)
 
 Swgger UI для спецификации API:
 
-```text
-http://188.225.58.19/api-docs/
-```
+[http://188.225.58.19/api-docs/](http://188.225.58.19/api-docs/)
 
 Ссылка на репозиторий с web-frontend:
 
-```text
-https://github.com/notes-hq/notes-web
-```
+[https://github.com/notes-hq/notes-web](https://github.com/notes-hq/notes-web)
 
 ## Назначение проекта
 
@@ -461,9 +453,7 @@ README дает обзор API для человека, а `openapi.yaml` сод
 
 После запуска backend интерактивная документация доступна по адресу:
 
-```text
-http://localhost:3000/api-docs
-```
+[http://localhost:3000/api-docs](http://localhost:3000/api-docs)
 
 Swagger UI визуализирует существующую спецификацию `openapi.yaml`. Через интерфейс можно просматривать описание endpoints, схемы запросов и ответов, а также отправлять тестовые запросы к backend через кнопку "Try it out".
 
